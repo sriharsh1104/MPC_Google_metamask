@@ -10,7 +10,7 @@ function Google_Auth() {
     const [recipient, setRecipient] = useState("");
     const [amount, setAmount] = useState("");
     const [message, setMessage] = useState("");
-
+    console.log(userInfo,"userInfo");
 
     const [google_sign, setGoogle_sign] = useState(false);
 
@@ -19,8 +19,14 @@ function Google_Auth() {
             try {
                 const res = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", { headers: { Authorization: `Bearer ${respose.access_token}`, }, });
                 setGoogle_sign(true)
-                let data = await axios.post('/api/data', { name: res.data.name, email: res.data.email })
-                console.log({ data }, "data");
+                let data = await axios.post('http://10.1.4.141:6500/SignUp', { firstName: res.data.family_name, lastName: res.data.given_name, pictureLink: res.data.picture, emailID: res.data.email })
+                console.log(data, "data");
+                setUserInfo(data)
+                // let data1 = await axios.get('https://10.1.4.141:6500/SignUp', )
+                // console.log(
+                //     data1,"data1"
+                // );
+
             } catch (err) {
                 console.log(err);
             }

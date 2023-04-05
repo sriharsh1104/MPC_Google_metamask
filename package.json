@@ -2,6 +2,7 @@
   "name": "new_test",
   "version": "0.1.0",
   "private": true,
+  "main": "App.js",
   "dependencies": {
     "@mui/material": "^5.11.14",
     "@react-oauth/google": "^0.9.0",
