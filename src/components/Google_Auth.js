@@ -3,6 +3,7 @@ import jwt_decode from "jwt-decode";
 import { useGoogleLogin, GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import Signup from "./Signup";
 
 function Google_Auth() {
     const [userInfo, setUserInfo] = useState("");
@@ -10,23 +11,16 @@ function Google_Auth() {
     const [amount, setAmount] = useState("");
     const [message, setMessage] = useState("");
 
+
     const [google_sign, setGoogle_sign] = useState(false);
 
     const login = useGoogleLogin({
         onSuccess: async (respose) => {
             try {
-                const res = await axios.get(
-                    "https://www.googleapis.com/oauth2/v3/userinfo",
-                    {
-                        headers: {
-                            Authorization: `Bearer ${respose.access_token}`,
-                        },
-                    }
-                );
-                setGoogle_sign(true);
-                setUserInfo(res.data);
-                console.log(res.data, "data");
-                console.log(userInfo, "data1");
+                const res = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", { headers: { Authorization: `Bearer ${respose.access_token}`, }, });
+                setGoogle_sign(true)
+                let data = await axios.post('/api/data', { name: res.data.name, email: res.data.email })
+                console.log({ data }, "data");
             } catch (err) {
                 console.log(err);
             }
@@ -36,9 +30,10 @@ function Google_Auth() {
     return (
         <div
         >
+
             {google_sign ? (
                 <div>
-                    
+
                     <form onSubmit={""}>
                         <label>
                             Recipient:
