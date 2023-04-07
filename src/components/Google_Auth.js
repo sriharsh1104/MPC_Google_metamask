@@ -1,20 +1,39 @@
 // import './App.css';
 import jwt_decode from "jwt-decode";
-import { useGoogleLogin, GoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin, useGoogleOneTapLogin, GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Signup from "./Signup";
+
 
 function Google_Auth() {
     const [userInfo, setUserInfo] = useState("");
     const [recipient, setRecipient] = useState("");
     const [amount, setAmount] = useState("");
     const [message, setMessage] = useState("");
-    console.log(userInfo,"userInfo");
+    console.log(userInfo, "userInfo");
 
     const [google_sign, setGoogle_sign] = useState(false);
 
-    const login = useGoogleLogin({
+    // const login = useGoogleLogin({
+    //     onSuccess: async (respose) => {
+    //         try {
+    //             const res = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", { headers: { Authorization: `Bearer ${respose.access_token}`, }, });
+    //             setGoogle_sign(true)
+    //             let data = await axios.post('http://10.1.4.141:6500/SignUp', { firstName: res.data.family_name, lastName: res.data.given_name, pictureLink: res.data.picture, emailID: res.data.email })
+    //             console.log(data, "data");
+    //             setUserInfo(data)
+    //             // let data1 = await axios.get('https://10.1.4.141:6500/SignUp', )
+    //             // console.log(
+    //             //     data1,"data1"
+    //             // );
+
+    //         } catch (err) {
+    //             console.log(err);
+    //         }
+    //     },
+    // });
+    const loginOne = useGoogleOneTapLogin({
         onSuccess: async (respose) => {
             try {
                 const res = await axios.get("https://www.googleapis.com/oauth2/v3/userinfo", { headers: { Authorization: `Bearer ${respose.access_token}`, }, });
@@ -31,7 +50,8 @@ function Google_Auth() {
                 console.log(err);
             }
         },
-    });
+
+    })
 
     return (
         <div
@@ -82,18 +102,23 @@ function Google_Auth() {
                     </form>
                 </div>
             ) : (
-                <div >
-                    <button onClick={login} style={{
-                        display: "flex",
-                        //   alignItems: "centre",
-                        justiftyContent: "centre",
-                    }}>
-                        <i className="fa-brands fa-google"></i>
-                        Login With Google Sign
+                // <div >
+                //     <button onClick={login} style={{
+                //         display: "flex",
+                //         //   alignItems: "centre",
+                //         justiftyContent: "centre",
+                //     }}>
+                //         <i className="fa-brands fa-google"></i>
+                //         Login With Google Sign
+                //     </button>
+                // </div>
+                // )}
+                <div>
+                    <button onClick={loginOne}>
+                        LoginOne
                     </button>
                 </div>
             )}
-
             <div>
                 <ul>
                     <li>{userInfo.email}</li>
